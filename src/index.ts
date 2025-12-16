@@ -24,37 +24,42 @@ connectDB();
 // Middleware
 app.use(helmet()); // Security headers
 app.use(
-  cors({
-    origin: [...config.cors.origin, "http://localhost:8080"],
-    credentials: true,
-  })
+    cors({
+        origin: [...config.cors.origin, "http://localhost:8080"],
+        credentials: true,
+    })
 );
 app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
 // Health check endpoint
 app.get("/health", (_req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: "Server is running",
-    timestamp: new Date().toISOString(),
-  });
+    res.status(200).json({
+        success: true,
+        message: "Server is running",
+        timestamp: new Date().toISOString(),
+    });
+});
+
+// Favicon to avoid 404 logs
+app.get("/favicon.ico", (_req: Request, res: Response) => {
+    res.status(204).end();
 });
 
 // Swagger API Documentation
 app.use(
-  "/api-docs",
-  swaggerUi.serve,
-  swaggerUi.setup(swaggerSpec, {
-    customCss: ".swagger-ui .topbar { display: none }",
-    customSiteTitle: "CoWork Kerala API Docs",
-  })
+    "/api-docs",
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerSpec, {
+        customCss: ".swagger-ui .topbar { display: none }",
+        customSiteTitle: "CoWork Kerala API Docs",
+    })
 );
 
 // Swagger JSON endpoint
 app.get("/api-docs.json", (_req: Request, res: Response) => {
-  res.setHeader("Content-Type", "application/json");
-  res.send(swaggerSpec);
+    res.setHeader("Content-Type", "application/json");
+    res.send(swaggerSpec);
 });
 
 // API Routes
@@ -76,25 +81,25 @@ app.use(errorHandler);
 const PORT = config.port;
 
 app.listen(PORT, () => {
-  console.log(`
+    console.log(`
 Environment: ${config.nodeEnv.padEnd(38)}
 Port:        ${String(PORT).padEnd(38)}
 CORS Origin: ${config.cors.origin.join(", ")}
-Health:      http://localhost:${PORT}/health 
-API Docs:    http://localhost:${PORT}/api-docs 
+Health:      http://localhost:${PORT}/health
+API Docs:    http://localhost:${PORT}/api-docs
   `);
 });
 
 // Handle unhandled promise rejections
 process.on("unhandledRejection", (err: Error) => {
-  console.error("Unhandled Promise Rejection:", err);
-  process.exit(1);
+    console.error("Unhandled Promise Rejection:", err);
+    process.exit(1);
 });
 
 // Handle uncaught exceptions
 process.on("uncaughtException", (err: Error) => {
-  console.error("Uncaught Exception:", err);
-  process.exit(1);
+    console.error("Uncaught Exception:", err);
+    process.exit(1);
 });
 
 export default app;
