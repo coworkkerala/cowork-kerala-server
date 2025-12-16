@@ -13,7 +13,13 @@ import { authenticate, authorize } from "@middlewares/auth.middleware";
  *     tags:
  *       - Locations
  *     summary: Get all locations
- *     description: Retrieve a list of all active locations
+ *     description: Retrieve a list of all active locations. Sorted by priority (desc) and then creation date (desc).
+ *     parameters:
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         description: Maximum number of locations to return
  *     responses:
  *       200:
  *         description: List of locations retrieved successfully
@@ -104,6 +110,10 @@ router.use(authorize("admin", "super_admin"));
  *               isActive:
  *                 type: boolean
  *                 default: true
+ *               priority:
+ *                 type: number
+ *                 default: 0
+ *                 description: Higher number means higher priority
  *     responses:
  *       201:
  *         description: Location created successfully
@@ -158,6 +168,8 @@ router.post("/", locationController.create);
  *                 type: string
  *               isActive:
  *                 type: boolean
+ *               priority:
+ *                 type: number
  *     responses:
  *       200:
  *         description: Location updated successfully
