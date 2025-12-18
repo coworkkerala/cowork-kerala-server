@@ -64,10 +64,11 @@ export class SpaceRepository {
     /**
      * Find featured spaces
      */
-    async findFeatured(): Promise<ISpace[]> {
+    async findFeatured(limit: number = 6): Promise<ISpace[]> {
         return await Space.find({ isFeatured: true, isDeleted: false })
             .populate("city")
-            .sort({ createdAt: -1 });
+            .sort({ createdAt: -1 })
+            .limit(limit);
     }
 
     /**

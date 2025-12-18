@@ -39,8 +39,8 @@ export class SpaceService {
     /**
      * Get featured spaces
      */
-    async getFeaturedSpaces(): Promise<ISpaceResponse[]> {
-        const spaces = await spaceRepository.findFeatured();
+    async getFeaturedSpaces(limit: number = 6): Promise<ISpaceResponse[]> {
+        const spaces = await spaceRepository.findFeatured(limit);
         return spaces.map((space) => this.formatSpaceResponse(space));
     }
 
