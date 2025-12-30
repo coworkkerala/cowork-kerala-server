@@ -52,7 +52,7 @@ export class SpaceRepository {
         const [spaces, total] = await Promise.all([
             Space.find(query)
                 .populate("city")
-                .sort({ createdAt: -1 })
+                .sort({ priority: -1, createdAt: -1 })
                 .skip(skip)
                 .limit(limit),
             Space.countDocuments(query),
@@ -67,7 +67,7 @@ export class SpaceRepository {
     async findFeatured(limit: number = 6): Promise<ISpace[]> {
         return await Space.find({ isFeatured: true, isDeleted: false })
             .populate("city")
-            .sort({ createdAt: -1 })
+            .sort({ priority: -1, createdAt: -1 })
             .limit(limit);
     }
 

@@ -96,12 +96,17 @@ export class SpaceService {
         // If updating name or city, check for duplicates
         if (updateData.spaceName || updateData.city) {
             const nameToCheck = updateData.spaceName || existingSpace.spaceName;
-            const cityToCheck = updateData.city || existingSpace.city;
+
+            // Handle city which might be populated or an ID
+            const existingCityId = existingSpace.city._id
+                ? existingSpace.city._id.toString()
+                : existingSpace.city.toString();
+            const cityToCheck = updateData.city || existingCityId;
 
             // Pass the current space ID to exclude it from duplicate check
             const exists = await spaceRepository.existsByNameAndCity(
                 nameToCheck,
-                cityToCheck,
+                cityToCheck.toString(),
                 id
             );
 
@@ -153,6 +158,7 @@ export class SpaceService {
             images: space.images,
             status: space.status,
             isFeatured: space.isFeatured,
+            priority: space.priority,
             createdAt: space.createdAt,
             updatedAt: space.updatedAt,
         };

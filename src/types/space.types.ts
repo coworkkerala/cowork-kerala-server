@@ -36,6 +36,7 @@ export interface ISpace extends Document {
     status: "active" | "inactive" | "pending";
     isFeatured: boolean;
     isDeleted: boolean; // For soft delete
+    priority: number;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -54,6 +55,7 @@ export interface ISpaceInput {
     images?: string[];
     status?: "active" | "inactive" | "pending";
     isFeatured?: boolean;
+    priority?: number;
 }
 
 export interface ISpaceResponse {
@@ -72,6 +74,7 @@ export interface ISpaceResponse {
     images?: string[];
     status: string;
     isFeatured: boolean;
+    priority: number;
     createdAt: Date;
     updatedAt: Date;
 }
